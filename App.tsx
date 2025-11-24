@@ -1,45 +1,98 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * RealMeet - Find Your Spot
+ * A modern friendship and dating app
  *
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
+import {WelcomeScreen} from './src/screens/WelcomeScreen';
+import {MobileNumberScreen} from './src/screens/MobileNumberScreen';
+import {OTPVerificationScreen} from './src/screens/OTPVerificationScreen';
+import {NameScreen} from './src/screens/NameScreen';
+import {GenderScreen} from './src/screens/GenderScreen';
+import {BirthdayScreen} from './src/screens/BirthdayScreen';
+import {RelationshipStatusScreen} from './src/screens/RelationshipStatusScreen';
+import {LookingForScreen} from './src/screens/LookingForScreen';
+import {PhotoUploadScreen} from './src/screens/PhotoUploadScreen';
+import {PasswordScreen} from './src/screens/PasswordScreen';
+import {MatchesScreen} from './src/screens/MatchesScreen';
+import {SignUpScreen} from './src/screens/SignUpScreen';
+import {LoginScreen} from './src/screens/LoginScreen';
+import {VisitorsScreen} from './src/screens/VisitorsScreen';
+import {LikesYouScreen} from './src/screens/LikesYouScreen';
+import {NewAndOnlineScreen} from './src/screens/NewAndOnlineScreen';
+import {SearchScreen} from './src/screens/SearchScreen';
+import {ProfileDetailScreen} from './src/screens/ProfileDetailScreen';
+import {MessagesScreen} from './src/screens/MessagesScreen';
+import {EditProfileScreen} from './src/screens/EditProfileScreen';
+import {ChatScreen} from './src/screens/ChatScreen';
 import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+  NavigationProvider,
+  useNavigation,
+} from './src/navigation/NavigationContext';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+function AppNavigator(): React.JSX.Element {
+  const {currentScreen} = useNavigation();
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'welcome':
+        return <WelcomeScreen />;
+      case 'mobile':
+        return <MobileNumberScreen />;
+      case 'otp':
+        return <OTPVerificationScreen />;
+      case 'name':
+        return <NameScreen />;
+      case 'gender':
+        return <GenderScreen />;
+      case 'birthday':
+        return <BirthdayScreen />;
+      case 'relationship':
+        return <RelationshipStatusScreen />;
+      case 'lookingfor':
+        return <LookingForScreen />;
+      case 'photos':
+        return <PhotoUploadScreen />;
+      case 'password':
+        return <PasswordScreen />;
+      case 'matches':
+        return <MatchesScreen />;
+      case 'signup':
+        return <SignUpScreen />;
+      case 'login':
+        return <LoginScreen />;
+      case 'visitors':
+        return <VisitorsScreen />;
+      case 'likesyou':
+        return <LikesYouScreen />;
+      case 'newonline':
+        return <NewAndOnlineScreen />;
+      case 'search':
+        return <SearchScreen />;
+      case 'profiledetail':
+        return <ProfileDetailScreen />;
+      case 'messages':
+        return <MessagesScreen />;
+      case 'editprofile':
+        return <EditProfileScreen />;
+      case 'chat':
+        return <ChatScreen />;
+      default:
+        return <WelcomeScreen />;
+    }
+  };
+
+  return renderScreen();
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+function App(): React.JSX.Element {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <NavigationProvider>
+      <AppNavigator />
+    </NavigationProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
