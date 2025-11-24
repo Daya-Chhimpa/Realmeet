@@ -6,13 +6,17 @@ import {
   SafeAreaView,
   StatusBar,
   TouchableOpacity,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {colors} from '../theme/colors';
 import {Input} from '../components/Input';
 import {useNavigation} from '../navigation/NavigationContext';
 
 export const MobileNumberScreen: React.FC = () => {
-  const {navigate} = useNavigation();
+  const {navigate, goBack} = useNavigation();
   const [phone, setPhone] = useState('');
 
   const handleNext = () => {
@@ -27,10 +31,15 @@ export const MobileNumberScreen: React.FC = () => {
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>What's your mobile number?</Text>
-          <Text style={styles.subtitle}>
-            We'll send you a verification code
-          </Text>
+          <TouchableOpacity onPress={goBack} style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.title}>What's your mobile number?</Text>
+            <Text style={styles.subtitle}>
+              We'll send you a verification code
+            </Text>
+          </View>
         </View>
 
         <View style={styles.formContainer}>
@@ -80,16 +89,38 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingHorizontal: SCREEN_WIDTH * 0.05,
+    paddingTop: Platform.OS === 'ios' ? 20 : 40,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
     justifyContent: 'space-between',
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   header: {
     marginBottom: 32,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  backButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: 4,
+  },
+  backButtonText: {
+    fontSize: 28,
+    color: colors.text.primary,
+  },
+  headerTextContainer: {
+    flex: 1,
   },
   title: {
-    fontSize: 28,
+    fontSize: Math.min(28, SCREEN_WIDTH * 0.07),
     fontWeight: '700',
     color: colors.text.primary,
     marginBottom: 8,
@@ -133,7 +164,7 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: colors.brand.purple,
     borderRadius: 12,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: colors.brand.purple,

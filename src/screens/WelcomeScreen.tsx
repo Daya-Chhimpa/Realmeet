@@ -24,7 +24,7 @@ export const WelcomeScreen: React.FC = () => {
 
   const handleSignUp = () => {
     console.log('Sign Up pressed');
-    navigate('mobile');
+    navigate('signup');
   };
 
   const handleLogin = () => {
