@@ -5,7 +5,11 @@ import {
   View,
   Text,
   TextInputProps,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {colors} from '../theme/colors';
 
 interface InputProps extends TextInputProps {
@@ -51,7 +55,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 2,
     borderColor: colors.ui.borderDark,
-    paddingHorizontal: 16,
+    paddingHorizontal: Math.max(12, SCREEN_WIDTH * 0.04),
+    minHeight: Math.max(50, SCREEN_WIDTH * 0.13),
   },
   inputError: {
     borderColor: colors.accent.red,
@@ -61,9 +66,10 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 56,
-    fontSize: 16,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
+    fontSize: Math.min(16, SCREEN_WIDTH * 0.04),
     color: colors.text.primary,
+    paddingVertical: Platform.OS === 'ios' ? 12 : 8,
   },
   inputWithIcon: {
     paddingLeft: 0,

@@ -6,7 +6,11 @@ import {
   StatusBar,
   TouchableOpacity,
   Text,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {colors} from '../theme/colors';
 import {OptionsList} from '../components/OptionsList';
 import {useNavigation} from '../navigation/NavigationContext';
@@ -20,7 +24,7 @@ const LOOKING_FOR_OPTIONS = [
 ];
 
 export const LookingForScreen: React.FC = () => {
-  const {navigate} = useNavigation();
+  const {navigate, goBack} = useNavigation();
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleNext = () => {
@@ -34,6 +38,9 @@ export const LookingForScreen: React.FC = () => {
       <View style={styles.gradientBackground} />
 
       <View style={styles.content}>
+        <TouchableOpacity onPress={goBack} style={styles.backButton}>
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
         <OptionsList
           title="What are you looking for"
           subtitle="Select one"
@@ -69,14 +76,30 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingHorizontal: SCREEN_WIDTH * 0.05,
+    paddingTop: Platform.OS === 'ios' ? 20 : 40,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  backButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginBottom: 20,
+  },
+  backButtonText: {
+    fontSize: 28,
+    color: colors.text.primary,
   },
   nextButton: {
     backgroundColor: colors.brand.purple,
     borderRadius: 12,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
