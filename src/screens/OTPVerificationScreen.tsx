@@ -7,7 +7,11 @@ import {
   StatusBar,
   TouchableOpacity,
   TextInput,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {colors} from '../theme/colors';
 import {useNavigation} from '../navigation/NavigationContext';
 
@@ -139,15 +143,18 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingHorizontal: SCREEN_WIDTH * 0.05,
+    paddingTop: Platform.OS === 'ios' ? 20 : 40,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   header: {
     marginBottom: 40,
   },
   title: {
-    fontSize: 32,
+    fontSize: Math.min(32, SCREEN_WIDTH * 0.08),
     fontWeight: '700',
     color: colors.text.primary,
     marginBottom: 12,
@@ -161,16 +168,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 32,
-    gap: 8,
+    gap: SCREEN_WIDTH * 0.02,
   },
   otpInput: {
     flex: 1,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     backgroundColor: colors.background.secondary,
     borderRadius: 12,
     borderWidth: 2,
     borderColor: colors.ui.borderDark,
-    fontSize: 24,
+    fontSize: Math.min(24, SCREEN_WIDTH * 0.06),
     fontWeight: '700',
     color: colors.text.primary,
     textAlign: 'center',
@@ -210,7 +217,7 @@ const styles = StyleSheet.create({
   continueButton: {
     backgroundColor: '#FF5722',
     borderRadius: 12,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 'auto',

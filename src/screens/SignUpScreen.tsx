@@ -7,7 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {colors} from '../theme/colors';
 import {Input} from '../components/Input';
 import {GenderSelector} from '../components/GenderSelector';
@@ -116,6 +120,8 @@ export const SignUpScreen: React.FC = () => {
                 onChangeText={text =>
                   updateFormData('birthday', {...formData.birthday, month: text})
                 }
+                keyboardType="number-pad"
+                maxLength={2}
                 style={styles.birthdayInput}
               />
               <Input
@@ -161,11 +167,9 @@ export const SignUpScreen: React.FC = () => {
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          {step > 1 && (
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <Text style={styles.backButtonText}>←</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
           <View style={styles.headerTextContainer}>
             <Text style={styles.title}>Complete your profile!</Text>
             <Text style={styles.headerSubtitle}>
@@ -211,20 +215,25 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: SCREEN_WIDTH * 0.05,
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: Platform.OS === 'ios' ? 10 : 20,
     marginBottom: 20,
   },
   backButton: {
-    width: 40,
-    height: 40,
+    width: 44,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   backButtonText: {
     fontSize: 28,
@@ -234,7 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 28,
+    fontSize: Math.min(28, SCREEN_WIDTH * 0.07),
     fontWeight: '700',
     color: colors.text.primary,
     marginBottom: 4,
@@ -262,10 +271,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   question: {
-    fontSize: 20,
+    fontSize: Math.min(20, SCREEN_WIDTH * 0.05),
     fontWeight: '600',
     color: colors.text.primary,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 14,
@@ -302,7 +311,8 @@ const styles = StyleSheet.create({
   },
   birthdayContainer: {
     flexDirection: 'row',
-    gap: 12,
+    justifyContent: 'space-between',
+    gap: SCREEN_WIDTH * 0.03,
     marginBottom: 32,
   },
   birthdayInput: {
@@ -310,11 +320,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingVertical: 20,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
   },
   nextButton: {
     backgroundColor: colors.brand.purple,
     borderRadius: 12,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: colors.brand.purple,

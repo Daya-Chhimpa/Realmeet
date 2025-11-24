@@ -10,13 +10,17 @@ import {
   Modal,
   Image,
   Alert,
+  Dimensions,
+  Platform,
 } from 'react-native';
+
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {colors} from '../theme/colors';
 import {useNavigation} from '../navigation/NavigationContext';
 
 export const PhotoUploadScreen: React.FC = () => {
-  const {navigate} = useNavigation();
+  const {navigate, goBack} = useNavigation();
   const [photos, setPhotos] = useState<string[]>([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<number>(0);
@@ -95,6 +99,9 @@ export const PhotoUploadScreen: React.FC = () => {
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
+          <TouchableOpacity onPress={goBack} style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
           <Text style={styles.title}>Upload your photos</Text>
           <TouchableOpacity onPress={handleSkip}>
             <Text style={styles.skipText}>SKIP</Text>
@@ -210,9 +217,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingHorizontal: SCREEN_WIDTH * 0.05,
+    paddingTop: Platform.OS === 'ios' ? 10 : 20,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -220,10 +230,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
-  title: {
+  backButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  backButtonText: {
     fontSize: 28,
+    color: colors.text.primary,
+  },
+  title: {
+    fontSize: Math.min(28, SCREEN_WIDTH * 0.07),
     fontWeight: '700',
     color: colors.text.primary,
+    flex: 1,
+    textAlign: 'center',
   },
   skipText: {
     fontSize: 16,
@@ -236,16 +260,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   photoSlot: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: Math.min(100, SCREEN_WIDTH * 0.22),
+    height: Math.min(100, SCREEN_WIDTH * 0.22),
+    borderRadius: Math.min(50, SCREEN_WIDTH * 0.11),
     backgroundColor: colors.background.cardBg,
     justifyContent: 'center',
     overflow: 'hidden',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: colors.ui.borderDark,
-    marginHorizontal: 8,
+    marginHorizontal: SCREEN_WIDTH * 0.02,
   },
   photoSlotIcon: {
     fontSize: 40,
@@ -278,7 +302,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: colors.ui.borderDark,
     borderRadius: 12,
-    height: 56,
+    height: Math.max(50, SCREEN_WIDTH * 0.13),
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 'auto',
